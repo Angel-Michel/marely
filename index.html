@@ -4,36 +4,54 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Una sorpresa para Marely...</title>
-    <!-- Se agregó la fuente 'Griffy' para el estilo Jack Skellington -->
     <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Dancing+Script:wght@600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Nunito:wght@600;800&family=Griffy&display=swap" rel="stylesheet">
     <style>
         body {
             margin: 0;
             padding: 0;
             min-height: 100vh;
-            background-color: #111;
             color: white;
             font-family: 'Playfair Display', serif;
             overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: background-color 0.5s ease;
+            transition: background-color 0.5s ease, background-image 0.5s ease;
+        }
+
+        /* --- FONDO ESTILO JACK SKELLINGTON (Traje a rayas) --- */
+        .fondo-jack {
+            background-color: #080808;
+            background-image: repeating-linear-gradient(
+                45deg,
+                #080808,
+                #080808 15px,
+                #222222 15px,
+                #222222 17px
+            );
         }
 
         /* --- PANTALLA DE INICIO --- */
         #pantalla-eleccion {
             text-align: center;
             z-index: 10;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.8);
+            border: 2px solid #222;
+            width: 90%;
+            max-width: 600px;
+            box-sizing: border-box;
         }
 
         #pantalla-eleccion h1 {
-            /* Cambio a fuente estilo Jack Skellington */
             font-family: 'Griffy', cursive;
             font-size: 3.5rem;
             margin-bottom: 40px;
             letter-spacing: 2px;
-            text-shadow: 0 0 15px rgba(255,255,255,0.3);
+            text-shadow: 0 0 15px rgba(255,255,255,0.4);
+            margin-top: 0;
         }
 
         .botones-container {
@@ -44,7 +62,7 @@
         }
 
         .btn-camino {
-            padding: 15px 40px;
+            padding: 15px 30px;
             font-size: 1.2rem;
             font-family: 'Nunito', sans-serif;
             font-weight: 800;
@@ -52,6 +70,8 @@
             border-radius: 50px;
             cursor: pointer;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            flex: 1;
+            min-width: 200px;
         }
 
         .btn-paz {
@@ -63,7 +83,7 @@
         .btn-paz:hover { transform: scale(1.05); box-shadow: 0 8px 25px rgba(141, 110, 99, 0.6); }
 
         .btn-terror {
-            background: linear-gradient(135deg, #434343, #000000);
+            background: linear-gradient(135deg, #2c2c2c, #000000);
             color: #d32f2f;
             border: 1px solid #d32f2f;
             box-shadow: 0 5px 15px rgba(211, 47, 47, 0.2);
@@ -90,10 +110,8 @@
 
         .carta-click-fullscreen {
             position: absolute;
-            top: 36%;
-            left: 39%;
-            width: 120px;
-            height: 90px;
+            top: 36%; left: 39%;
+            width: 120px; height: 90px;
             cursor: pointer;
             border-radius: 8px;
             animation: pulse-border 1.5s infinite;
@@ -114,12 +132,12 @@
             text-shadow: 2px 2px 4px rgba(0,0,0,0.9);
             z-index: 5;
             margin: 0;
+            text-align: center;
         }
 
         .btn-regresar-flotante {
             position: absolute;
-            top: 20px;
-            left: 20px;
+            top: 20px; left: 20px;
             z-index: 5;
             background: rgba(0, 0, 0, 0.7);
             color: white;
@@ -131,8 +149,7 @@
             display: none;
             z-index: 20;
             position: fixed;
-            top: 50%;
-            left: 50%;
+            top: 50%; left: 50%;
             transform: translate(-50%, -50%);
             background: #fdf5e6;
             background-image: radial-gradient(#faf0e6 20%, #fdf5e6 80%);
@@ -154,21 +171,21 @@
 
         .letter-text {
             font-family: 'Playfair Display', serif;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             color: #3e2723;
-            line-height: 1.6;
+            line-height: 1.5;
             margin-bottom: 25px;
             text-align: left;
         }
 
         .letter-text .highlight {
             font-family: 'Dancing Script', cursive;
-            font-size: 1.9rem;
+            font-size: 1.7rem;
             color: #bf360c;
             display: block;
             text-align: center;
-            margin: 20px 0;
-            line-height: 1.3;
+            margin: 15px 0;
+            line-height: 1.2;
         }
 
         .close-btn {
@@ -187,10 +204,7 @@
             margin: 5px;
         }
 
-        .close-btn:hover {
-            background: #5d4037;
-            transform: translateY(-2px);
-        }
+        .close-btn:hover { background: #5d4037; transform: translateY(-2px); }
 
         /* --- CAMINO DE TERROR --- */
         #camino-terror {
@@ -218,51 +232,44 @@
             position: absolute;
             top: 55%; 
             left: 70%;
-            width: 15vw;
-            height: 15vw;
-            min-width: 80px;
-            min-height: 80px;
+            width: 12vw;
+            height: 12vw;
+            min-width: 70px;
+            min-height: 70px;
             z-index: 5;
             cursor: pointer;
             border-radius: 50%;
         }
 
         #linterna-oscuridad {
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            top: 0; left: 0;
-            z-index: 2;
-            pointer-events: none;
+            width: 100%; height: 100%;
+            position: absolute; top: 0; left: 0;
+            z-index: 2; pointer-events: none;
             background: radial-gradient(circle 80px at var(--x, 50%) var(--y, 50%), transparent 0%, rgba(0, 0, 0, 0.98) 120px, black 100%);
         }
 
         #luz-borde {
             position: absolute;
-            width: 240px;
-            height: 240px;
+            width: 240px; height: 240px;
             border-radius: 50%;
             box-shadow: 0 0 40px rgba(255, 253, 224, 0.2), inset 0 0 20px rgba(255, 255, 255, 0.1);
             transform: translate(-50%, -50%);
-            top: var(--y, 50%);
-            left: var(--x, 50%);
-            z-index: 3;
-            pointer-events: none;
+            top: var(--y, 50%); left: var(--x, 50%);
+            z-index: 3; pointer-events: none;
             border: 2px solid rgba(255, 253, 224, 0.05);
             display: none; 
         }
 
         .instruccion-terror {
             position: absolute;
-            top: 30px;
-            width: 100%;
-            text-align: center;
-            z-index: 4;
+            top: 30px; width: 100%;
+            text-align: center; z-index: 4;
             color: rgba(255, 255, 255, 0.6);
             font-family: 'Creepster', cursive;
-            font-size: 1.3rem;
-            pointer-events: none;
+            font-size: 1.3rem; pointer-events: none;
             letter-spacing: 2px;
+            padding: 0 15px;
+            box-sizing: border-box;
         }
 
         /* --- MENSAJE DE JASON --- */
@@ -274,54 +281,47 @@
             z-index: 15;
             text-align: center;
             width: 90%;
-            max-width: 480px;
+            max-width: 450px;
             background: rgba(15, 5, 5, 0.95);
             border: 2px solid #d32f2f;
             border-radius: 12px;
-            padding: 30px;
+            padding: 25px;
             box-shadow: 0 0 50px rgba(211, 47, 47, 0.8);
+            box-sizing: border-box;
         }
 
         .mensaje-jason-texto {
             font-family: 'Playfair Display', serif;
-            font-size: 1.15rem;
+            font-size: 1.1rem;
             color: #fce4ec;
-            line-height: 1.6;
+            line-height: 1.5;
             text-align: left;
             margin-bottom: 20px;
         }
 
         .mensaje-jason-texto .firma-amor {
             font-family: 'Dancing Script', cursive;
-            font-size: 1.9rem;
+            font-size: 1.7rem;
             color: #ff5252;
             text-align: center;
             display: block;
             margin-top: 15px;
         }
 
-        /* Botón espeluznante para salir */
         .btn-escape-terror {
-            background: transparent;
-            color: #d32f2f;
-            border: 2px dashed #d32f2f;
-            padding: 12px 30px;
-            font-family: 'Creepster', cursive;
-            font-size: 1.4rem;
-            border-radius: 5px;
-            cursor: pointer;
+            background: transparent; color: #d32f2f; border: 2px dashed #d32f2f;
+            padding: 12px 25px; font-family: 'Creepster', cursive;
+            font-size: 1.3rem; border-radius: 5px; cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 0 15px rgba(211, 47, 47, 0.3), inset 0 0 10px rgba(211, 47, 47, 0.1);
-            letter-spacing: 2px;
-            margin-top: 10px;
+            letter-spacing: 2px; margin-top: 10px;
+            width: 100%;
         }
 
         .btn-escape-terror:hover {
-            background: rgba(211, 47, 47, 0.15);
-            color: #ff5252;
+            background: rgba(211, 47, 47, 0.15); color: #ff5252;
             box-shadow: 0 0 25px rgba(211, 47, 47, 0.9), inset 0 0 15px rgba(211, 47, 47, 0.5);
-            transform: scale(1.05);
-            border-style: solid;
+            transform: scale(1.05); border-style: solid;
         }
 
         .pantalla-roja { animation: flashRojo 0.15s 2; }
@@ -331,29 +331,39 @@
             50% { filter: brightness(0.4) sepia(1) hue-rotate(-50deg) saturate(8); }
         }
 
+        /* --- ADAPTACIÓN MÓVIL (RESPONSIVE) --- */
         @media (max-width: 600px) {
-            #pantalla-eleccion h1 { font-size: 2.2rem; }
-            .btn-camino { width: 80%; }
-            .mensaje-lindo { font-size: 1.4rem; }
-            .modal-carta, #jumpscare-mensaje { padding: 25px 15px; width: 90%; }
+            #pantalla-eleccion h1 { font-size: 2.2rem; margin-bottom: 25px; }
+            #pantalla-eleccion { padding: 25px 15px; }
+            .botones-container { flex-direction: column; gap: 15px; }
+            .btn-camino { width: 100%; padding: 12px 20px; font-size: 1.1rem; }
+            
+            .mensaje-lindo { font-size: 1.3rem; padding: 10px; width: 90%; }
+            .modal-carta, #jumpscare-mensaje { padding: 20px 15px; width: 92%; }
+            .letter-text { font-size: 1rem; }
+            .letter-text .highlight { font-size: 1.5rem; }
+            
+            /* Ajuste de carta en camino de paz para móvil */
             .carta-click-fullscreen {
-                top: 32%; left: 30%; width: 140px; height: 100px;
+                top: 33%; left: 28%; width: 150px; height: 110px;
             }
+            
+            /* Ajuste de linterna para móvil (más pequeña) */
             #linterna-oscuridad {
-                background: radial-gradient(circle 50px at var(--x, 50%) var(--y, 50%), transparent 0%, rgba(0, 0, 0, 0.99) 90px, black 100%);
+                background: radial-gradient(circle 60px at var(--x, 50%) var(--y, 50%), transparent 0%, rgba(0, 0, 0, 0.99) 100px, black 100%);
             }
-            #luz-borde { width: 140px; height: 140px; }
-            /* Ajuste de flor en móviles */
+            #luz-borde { width: 160px; height: 160px; }
+            
+            /* Ajuste de flor en móviles (hitbox más grande para facilitar el toque) */
             #flor-hitbox {
-                top: 50%;
-                left: 65%;
-                width: 25vw;
-                height: 25vw;
+                top: 50%; left: 62%;
+                width: 25vw; height: 25vw;
+                min-width: 90px; min-height: 90px;
             }
         }
     </style>
 </head>
-<body>
+<body class="fondo-jack">
 
     <!-- FASE 1: LA ELECCIÓN -->
     <div id="pantalla-eleccion">
@@ -392,7 +402,7 @@
 
         <div id="linterna-oscuridad"></div>
         <div id="luz-borde"></div>
-        <div class="instruccion-terror" id="texto-busca">Explora el bosque con la linterna e ilumina la flor...</div>
+        <div class="instruccion-terror" id="texto-busca">Explora el bosque e ilumina la flor...</div>
         
         <!-- CARTA ROMÁNTICA DE JASON -->
         <div id="jumpscare-mensaje">
@@ -401,7 +411,7 @@
                 Incluso el monstruo del bosque te trae una flor porque eres lo más especial que tengo. 
                 <span class="firma-amor">Te quiero y te amo con todo mi corazón, Marely. 🌹🖤</span>
             </div>
-            <!-- Nuevo botón espeluznante -->
+            <!-- Botón espeluznante -->
             <button class="btn-escape-terror" onclick="regresarMenu()">Huir a salvo...</button>
         </div>
     </div>
@@ -417,6 +427,7 @@
 
         function elegirCamino(ruta) {
             pantallaEleccion.style.display = 'none';
+            body.classList.remove('fondo-jack'); // Quitamos las rayas de Jack
 
             if (ruta === 'paz') {
                 body.style.backgroundColor = '#121824';
@@ -425,14 +436,14 @@
                 body.style.backgroundColor = '#000';
                 caminoTerror.style.display = 'block';
                 luzBorde.style.display = 'block';
-                hitboxFlor.style.display = 'block'; // Asegurar que el hitbox esté activo
+                hitboxFlor.style.display = 'block'; 
                 iniciarLinterna();
             }
         }
 
         function iniciarLinterna() {
             document.addEventListener('mousemove', moverLinterna);
-            document.addEventListener('touchmove', moverLinternaTacto);
+            document.addEventListener('touchmove', moverLinternaTacto, {passive: false});
         }
 
         function moverLinterna(e) {
@@ -452,7 +463,7 @@
         function activarJumpscare() {
             linterna.style.display = 'none';
             luzBorde.style.display = 'none';
-            hitboxFlor.style.display = 'none'; // Desactivar hitbox tras encontrarla
+            hitboxFlor.style.display = 'none'; 
             document.getElementById('texto-busca').style.display = 'none';
             
             document.getElementById('jumpscare-mensaje').style.display = 'block';
@@ -489,13 +500,13 @@
             caminoTranquilo.style.filter = "none";
             caminoTranquilo.style.pointerEvents = "auto";
 
-            // Detener event listeners de la linterna para no sobrecargar
             document.removeEventListener('mousemove', moverLinterna);
             document.removeEventListener('touchmove', moverLinternaTacto);
 
-            body.style.backgroundColor = '#111';
+            body.style.backgroundColor = ''; // Limpiamos colores de fondo
+            body.classList.add('fondo-jack'); // Restauramos las rayas de Jack
             pantallaEleccion.style.display = 'block';
         }
     </script>
 </body>
-</html>
+</html> 
