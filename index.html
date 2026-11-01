@@ -110,10 +110,13 @@
 
         .carta-click-fullscreen {
             position: absolute;
-            top: 36%; left: 39%;
-            width: 120px; height: 90px;
+            top: 48%; /* Posición ajustada hacia abajo */
+            left: 35%; 
+            width: 130px; 
+            height: 90px;
             cursor: pointer;
             border-radius: 8px;
+            transform: rotate(-25deg); /* Inclinación de la carta */
             animation: pulse-border 1.5s infinite;
         }
 
@@ -343,9 +346,13 @@
             .letter-text { font-size: 1rem; }
             .letter-text .highlight { font-size: 1.5rem; }
             
-            /* Ajuste de carta en camino de paz para móvil */
+            /* Ajuste de carta en camino de paz para móvil (alineado e inclinado) */
             .carta-click-fullscreen {
-                top: 33%; left: 28%; width: 150px; height: 110px;
+                top: 48%; 
+                left: 18%; 
+                width: 140px; 
+                height: 90px;
+                transform: rotate(-25deg);
             }
             
             /* Ajuste de linterna para móvil (más pequeña) */
