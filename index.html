@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Una sorpresa para Marely...</title>
-    <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Dancing+Script:wght@600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Nunito:wght@600;800&display=swap" rel="stylesheet">
+    <!-- Se agregó la fuente 'Griffy' para el estilo Jack Skellington -->
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Dancing+Script:wght@600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Nunito:wght@600;800&family=Griffy&display=swap" rel="stylesheet">
     <style>
         body {
             margin: 0;
@@ -27,10 +28,12 @@
         }
 
         #pantalla-eleccion h1 {
-            font-size: 2.5rem;
+            /* Cambio a fuente estilo Jack Skellington */
+            font-family: 'Griffy', cursive;
+            font-size: 3.5rem;
             margin-bottom: 40px;
-            text-transform: uppercase;
             letter-spacing: 2px;
+            text-shadow: 0 0 15px rgba(255,255,255,0.3);
         }
 
         .botones-container {
@@ -69,7 +72,7 @@
         }
         .btn-terror:hover { transform: scale(1.05); box-shadow: 0 8px 25px rgba(211, 47, 47, 0.6); }
 
-        /* --- CAMINO TRANQUILO (ROBIN - PANTALLA COMPLETA) --- */
+        /* --- CAMINO TRANQUILO --- */
         #camino-tranquilo {
             display: none;
             width: 100vw;
@@ -142,9 +145,7 @@
             text-align: center;
         }
 
-        .letter-open {
-            animation: unfold 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-        }
+        .letter-open { animation: unfold 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
 
         @keyframes unfold {
             0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
@@ -191,7 +192,7 @@
             transform: translateY(-2px);
         }
 
-        /* --- CAMINO DE TERROR (JASON Y LINTERNA) --- */
+        /* --- CAMINO DE TERROR --- */
         #camino-terror {
             display: none;
             width: 100vw;
@@ -210,6 +211,20 @@
             position: absolute;
             top: 0; left: 0;
             z-index: 1;
+        }
+
+        /* Hitbox invisible sobre la flor */
+        #flor-hitbox {
+            position: absolute;
+            top: 55%; 
+            left: 70%;
+            width: 15vw;
+            height: 15vw;
+            min-width: 80px;
+            min-height: 80px;
+            z-index: 5;
+            cursor: pointer;
+            border-radius: 50%;
         }
 
         #linterna-oscuridad {
@@ -250,7 +265,7 @@
             letter-spacing: 2px;
         }
 
-        /* --- MENSAJE DE JASON (CARTA ROMÁNTICA) --- */
+        /* --- MENSAJE DE JASON --- */
         #jumpscare-mensaje {
             display: none;
             position: absolute;
@@ -285,9 +300,31 @@
             margin-top: 15px;
         }
 
-        .pantalla-roja {
-            animation: flashRojo 0.15s 2;
+        /* Botón espeluznante para salir */
+        .btn-escape-terror {
+            background: transparent;
+            color: #d32f2f;
+            border: 2px dashed #d32f2f;
+            padding: 12px 30px;
+            font-family: 'Creepster', cursive;
+            font-size: 1.4rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(211, 47, 47, 0.3), inset 0 0 10px rgba(211, 47, 47, 0.1);
+            letter-spacing: 2px;
+            margin-top: 10px;
         }
+
+        .btn-escape-terror:hover {
+            background: rgba(211, 47, 47, 0.15);
+            color: #ff5252;
+            box-shadow: 0 0 25px rgba(211, 47, 47, 0.9), inset 0 0 15px rgba(211, 47, 47, 0.5);
+            transform: scale(1.05);
+            border-style: solid;
+        }
+
+        .pantalla-roja { animation: flashRojo 0.15s 2; }
 
         @keyframes flashRojo {
             0%, 100% { filter: brightness(1); }
@@ -295,20 +332,24 @@
         }
 
         @media (max-width: 600px) {
-            #pantalla-eleccion h1 { font-size: 1.8rem; }
+            #pantalla-eleccion h1 { font-size: 2.2rem; }
             .btn-camino { width: 80%; }
             .mensaje-lindo { font-size: 1.4rem; }
             .modal-carta, #jumpscare-mensaje { padding: 25px 15px; width: 90%; }
             .carta-click-fullscreen {
-                top: 32%;
-                left: 30%;
-                width: 140px;
-                height: 100px;
+                top: 32%; left: 30%; width: 140px; height: 100px;
             }
             #linterna-oscuridad {
                 background: radial-gradient(circle 50px at var(--x, 50%) var(--y, 50%), transparent 0%, rgba(0, 0, 0, 0.99) 90px, black 100%);
             }
             #luz-borde { width: 140px; height: 140px; }
+            /* Ajuste de flor en móviles */
+            #flor-hitbox {
+                top: 50%;
+                left: 65%;
+                width: 25vw;
+                height: 25vw;
+            }
         }
     </style>
 </head>
@@ -323,7 +364,7 @@
         </div>
     </div>
 
-    <!-- FASE 2: CAMINO TRANQUILO (PANTALLA COMPLETA) -->
+    <!-- FASE 2: CAMINO TRANQUILO -->
     <div id="camino-tranquilo">
         <button class="close-btn btn-regresar-flotante" onclick="regresarMenu()">← Volver</button>
         <div class="carta-click-fullscreen" onclick="openLetter('letter-modal')"></div>
@@ -344,11 +385,14 @@
 
     <!-- FASE 3: CAMINO DE TERROR -->
     <div id="camino-terror">
-        <!-- Al hacer clic en el fondo oscuro con la linterna se activa el mensaje -->
-        <div id="jason-fondo" onclick="activarJumpscare()"></div>
+        <div id="jason-fondo"></div>
+        
+        <!-- Hitbox oculto en la flor -->
+        <div id="flor-hitbox" onclick="activarJumpscare()"></div>
+
         <div id="linterna-oscuridad"></div>
         <div id="luz-borde"></div>
-        <div class="instruccion-terror" id="texto-busca">Explora el bosque con la linterna... Toca si encuentras algo.</div>
+        <div class="instruccion-terror" id="texto-busca">Explora el bosque con la linterna e ilumina la flor...</div>
         
         <!-- CARTA ROMÁNTICA DE JASON -->
         <div id="jumpscare-mensaje">
@@ -357,7 +401,8 @@
                 Incluso el monstruo del bosque te trae una flor porque eres lo más especial que tengo. 
                 <span class="firma-amor">Te quiero y te amo con todo mi corazón, Marely. 🌹🖤</span>
             </div>
-            <button class="close-btn" onclick="regresarMenu()">Regresar al Inicio</button>
+            <!-- Nuevo botón espeluznante -->
+            <button class="btn-escape-terror" onclick="regresarMenu()">Huir a salvo...</button>
         </div>
     </div>
 
@@ -367,6 +412,7 @@
         const caminoTerror = document.getElementById('camino-terror');
         const linterna = document.getElementById('linterna-oscuridad');
         const luzBorde = document.getElementById('luz-borde');
+        const hitboxFlor = document.getElementById('flor-hitbox');
         const body = document.body;
 
         function elegirCamino(ruta) {
@@ -379,30 +425,34 @@
                 body.style.backgroundColor = '#000';
                 caminoTerror.style.display = 'block';
                 luzBorde.style.display = 'block';
+                hitboxFlor.style.display = 'block'; // Asegurar que el hitbox esté activo
                 iniciarLinterna();
             }
         }
 
         function iniciarLinterna() {
-            document.addEventListener('mousemove', (e) => {
-                linterna.style.setProperty('--x', e.clientX + 'px');
-                linterna.style.setProperty('--y', e.clientY + 'px');
-                luzBorde.style.setProperty('--x', e.clientX + 'px');
-                luzBorde.style.setProperty('--y', e.clientY + 'px');
-            });
+            document.addEventListener('mousemove', moverLinterna);
+            document.addEventListener('touchmove', moverLinternaTacto);
+        }
 
-            document.addEventListener('touchmove', (e) => {
-                linterna.style.setProperty('--x', e.touches[0].clientX + 'px');
-                linterna.style.setProperty('--y', e.touches[0].clientY + 'px');
-                luzBorde.style.setProperty('--x', e.touches[0].clientX + 'px');
-                luzBorde.style.setProperty('--y', e.touches[0].clientY + 'px');
-            });
+        function moverLinterna(e) {
+            linterna.style.setProperty('--x', e.clientX + 'px');
+            linterna.style.setProperty('--y', e.clientY + 'px');
+            luzBorde.style.setProperty('--x', e.clientX + 'px');
+            luzBorde.style.setProperty('--y', e.clientY + 'px');
+        }
+
+        function moverLinternaTacto(e) {
+            linterna.style.setProperty('--x', e.touches[0].clientX + 'px');
+            linterna.style.setProperty('--y', e.touches[0].clientY + 'px');
+            luzBorde.style.setProperty('--x', e.touches[0].clientX + 'px');
+            luzBorde.style.setProperty('--y', e.touches[0].clientY + 'px');
         }
 
         function activarJumpscare() {
-            // Ocultar la linterna para revelar la imagen completa y mostrar la tarjeta de amor
             linterna.style.display = 'none';
             luzBorde.style.display = 'none';
+            hitboxFlor.style.display = 'none'; // Desactivar hitbox tras encontrarla
             document.getElementById('texto-busca').style.display = 'none';
             
             document.getElementById('jumpscare-mensaje').style.display = 'block';
@@ -439,9 +489,13 @@
             caminoTranquilo.style.filter = "none";
             caminoTranquilo.style.pointerEvents = "auto";
 
+            // Detener event listeners de la linterna para no sobrecargar
+            document.removeEventListener('mousemove', moverLinterna);
+            document.removeEventListener('touchmove', moverLinternaTacto);
+
             body.style.backgroundColor = '#111';
             pantallaEleccion.style.display = 'block';
         }
     </script>
 </body>
-</html> 
+</html>
