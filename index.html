@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Una sorpresa para Marely...</title>
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Nunito:wght@600;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background-color: #111;
+            color: white;
+            font-family: 'Nunito', sans-serif;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.5s ease;
+        }
+
+        /* --- PANTALLA DE INICIO --- */
+        #pantalla-eleccion {
+            text-align: center;
+            z-index: 10;
+        }
+
+        #pantalla-eleccion h1 {
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .botones-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-camino {
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 800;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .btn-paz {
+            background: linear-gradient(135deg, #ff9a9e, #fecfef);
+            color: #d81b60;
+            box-shadow: 0 5px 15px rgba(255, 154, 158, 0.4);
+        }
+        .btn-paz:hover { transform: scale(1.05); box-shadow: 0 8px 25px rgba(255, 154, 158, 0.6); }
+
+        .btn-terror {
+            background: linear-gradient(135deg, #434343, #000000);
+            color: #d32f2f;
+            border: 1px solid #d32f2f;
+            box-shadow: 0 5px 15px rgba(211, 47, 47, 0.2);
+            font-family: 'Creepster', cursive;
+            letter-spacing: 2px;
+        }
+        .btn-terror:hover { transform: scale(1.05); box-shadow: 0 8px 25px rgba(211, 47, 47, 0.6); }
+
+        /* --- CAMINO TRANQUILO (ROBIN) --- */
+        #camino-tranquilo {
+            display: none;
+            text-align: center;
+            background-color: #fff9fc;
+            width: 100vw;
+            height: 100vh;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            color: #333;
+        }
+
+        .polaroid-robin {
+            background: white;
+            padding: 15px 15px 30px 15px;
+            border-radius: 5px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            max-width: 300px;
+            transform: rotate(-3deg);
+        }
+
+        .polaroid-robin img {
+            width: 100%;
+            height: auto;
+            border-radius: 3px;
+        }
+
+        .mensaje-lindo {
+            font-size: 1.8rem;
+            color: #d81b60;
+            margin-top: 20px;
+            font-weight: 800;
+        }
+
+        /* --- CAMINO DE TERROR (JASON Y LINTERNA) --- */
+        #camino-terror {
+            display: none;
+            width: 100vw;
+            height: 100vh;
+            position: absolute;
+            top: 0; left: 0;
+            cursor: crosshair;
+        }
+
+        /* La imagen de Jason en el fondo */
+        #jason-fondo {
+            width: 100%;
+            height: 100%;
+            background-image: url('jason.jpg');
+            background-size: cover;
+            background-position: center;
+            position: absolute;
+            top: 0; left: 0;
+            z-index: 1;
+        }
+
+        /* La capa de oscuridad que simula la linterna */
+        #linterna-oscuridad {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0; left: 0;
+            z-index: 2;
+            pointer-events: none; /* Permite dar clic a través de la sombra */
+            /* Se usan variables CSS para mover la luz con el mouse/dedo */
+            background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), transparent 40px, rgba(0, 0, 0, 0.98) 120px, black 100%);
+        }
+
+        .instruccion-terror {
+            position: absolute;
+            top: 20px;
+            width: 100%;
+            text-align: center;
+            z-index: 3;
+            color: rgba(255, 255, 255, 0.5);
+            font-family: 'Creepster', cursive;
+            font-size: 1.2rem;
+            pointer-events: none;
+            letter-spacing: 2px;
+        }
+
+        /* --- JUMPSCARE Y MENSAJE DE TERROR --- */
+        #jumpscare-mensaje {
+            display: none;
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            text-align: center;
+            width: 100%;
+        }
+
+        .texto-sangre {
+            font-family: 'Creepster', cursive;
+            font-size: 4rem;
+            color: #d32f2f;
+            text-shadow: 0 0 20px #ff0000, 2px 2px 0px #000;
+            margin: 0;
+            animation: glitch 0.3s infinite;
+        }
+
+        .texto-amenaza {
+            font-size: 1.5rem;
+            color: white;
+            text-shadow: 2px 2px 5px black;
+            margin-top: 10px;
+        }
+
+        @keyframes glitch {
+            0% { transform: translate(0) }
+            20% { transform: translate(-2px, 2px) }
+            40% { transform: translate(-2px, -2px) }
+            60% { transform: translate(2px, 2px) }
+            80% { transform: translate(2px, -2px) }
+            100% { transform: translate(0) }
+        }
+
+        .pantalla-roja {
+            animation: flashRojo 0.15s 3;
+        }
+
+        @keyframes flashRojo {
+            0%, 100% { filter: brightness(1) sepia(0) hue-rotate(0) saturate(1); }
+            50% { filter: brightness(0.5) sepia(1) hue-rotate(-50deg) saturate(10) contrast(2); }
+        }
+
+        @media (max-width: 600px) {
+            #pantalla-eleccion h1 { font-size: 1.8rem; }
+            .btn-camino { width: 80%; }
+            .texto-sangre { font-size: 2.5rem; }
+            #linterna-oscuridad {
+                background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), transparent 30px, rgba(0, 0, 0, 0.99) 90px, black 100%);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- FASE 1: LA ELECCIÓN -->
+    <div id="pantalla-eleccion">
+        <h1>Marely, elige tu destino...</h1>
+        <div class="botones-container">
+            <button class="btn-camino btn-paz" onclick="elegirCamino('paz')">Camino de la Paz</button>
+            <button class="btn-camino btn-terror" onclick="elegirCamino('terror')">Camino de las Sombras</button>
+        </div>
+    </div>
+
+    <!-- FASE 2: CAMINO TRANQUILO -->
+    <div id="camino-tranquilo">
+        <div class="polaroid-robin">
+            <img src="robin.jpg" alt="Robin con flores">
+        </div>
+        <p class="mensaje-lindo">¡Elegiste bien, Marely!<br>Te mereces todas las flores de este mundo. 🌸</p>
+    </div>
+
+    <!-- FASE 3: CAMINO DE TERROR -->
+    <div id="camino-terror">
+        <div id="jason-fondo" onclick="activarJumpscare()"></div>
+        <div id="linterna-oscuridad"></div>
+        <div class="instruccion-terror" id="texto-busca">Desliza para buscar en la oscuridad... Toca lo que encuentres.</div>
+        
+        <div id="jumpscare-mensaje">
+            <h2 class="texto-sangre">TE ENCONTRÉ, MARELY</h2>
+            <p class="texto-amenaza">No debiste entrar aquí...</p>
+        </div>
+    </div>
+
+    <script>
+        const pantallaEleccion = document.getElementById('pantalla-eleccion');
+        const caminoTranquilo = document.getElementById('camino-tranquilo');
+        const caminoTerror = document.getElementById('camino-terror');
+        const linterna = document.getElementById('linterna-oscuridad');
+        const body = document.body;
+
+        function elegirCamino(ruta) {
+            pantallaEleccion.style.display = 'none';
+
+            if (ruta === 'paz') {
+                body.style.backgroundColor = '#fff9fc';
+                caminoTranquilo.style.display = 'flex';
+            } else if (ruta === 'terror') {
+                body.style.backgroundColor = '#000';
+                caminoTerror.style.display = 'block';
+                iniciarLinterna();
+            }
+        }
+
+        function iniciarLinterna() {
+            // Actualiza la posición de la luz con el mouse
+            document.addEventListener('mousemove', (e) => {
+                linterna.style.setProperty('--x', e.clientX + 'px');
+                linterna.style.setProperty('--y', e.clientY + 'px');
+            });
+
+            // Actualiza la posición de la luz con el dedo en celulares
+            document.addEventListener('touchmove', (e) => {
+                linterna.style.setProperty('--x', e.touches[0].clientX + 'px');
+                linterna.style.setProperty('--y', e.touches[0].clientY + 'px');
+            });
+        }
+
+        function activarJumpscare() {
+            // Elimina la capa de sombra para revelar a Jason completo de golpe
+            linterna.style.display = 'none';
+            document.getElementById('texto-busca').style.display = 'none';
+            
+            // Muestra el mensaje aterrador
+            document.getElementById('jumpscare-mensaje').style.display = 'block';
+            
+            // Agrega un efecto de flash rojo parpadeante a toda la pantalla
+            caminoTerror.classList.add('pantalla-roja');
+        }
+    </script>
+</body>
+</html>
