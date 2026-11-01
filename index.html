@@ -85,10 +85,8 @@
             padding-bottom: 30px;
         }
 
-        /* Área interactiva invisible sobre la carta en la imagen */
         .carta-click-fullscreen {
             position: absolute;
-            /* Coordenadas adaptadas para cubrir el área de la carta en el ramo */
             top: 36%;
             left: 39%;
             width: 120px;
@@ -252,20 +250,21 @@
             letter-spacing: 2px;
         }
 
+        /* --- MENSAJE DE JASON (CARTA ROMÁNTICA) --- */
         #jumpscare-mensaje {
             display: none;
             position: absolute;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            z-index: 10;
+            z-index: 15;
             text-align: center;
             width: 90%;
             max-width: 480px;
-            background: rgba(10, 5, 5, 0.95);
+            background: rgba(15, 5, 5, 0.95);
             border: 2px solid #d32f2f;
-            border-radius: 10px;
+            border-radius: 12px;
             padding: 30px;
-            box-shadow: 0 0 40px rgba(211, 47, 47, 0.6);
+            box-shadow: 0 0 50px rgba(211, 47, 47, 0.8);
         }
 
         .mensaje-jason-texto {
@@ -279,7 +278,7 @@
 
         .mensaje-jason-texto .firma-amor {
             font-family: 'Dancing Script', cursive;
-            font-size: 1.8rem;
+            font-size: 1.9rem;
             color: #ff5252;
             text-align: center;
             display: block;
@@ -327,7 +326,6 @@
     <!-- FASE 2: CAMINO TRANQUILO (PANTALLA COMPLETA) -->
     <div id="camino-tranquilo">
         <button class="close-btn btn-regresar-flotante" onclick="regresarMenu()">← Volver</button>
-        <!-- Área interactiva exacta sobre la carta -->
         <div class="carta-click-fullscreen" onclick="openLetter('letter-modal')"></div>
         <p class="mensaje-lindo">Toca la carta oculta entre las rosas... 🌙</p>
     </div>
@@ -346,12 +344,13 @@
 
     <!-- FASE 3: CAMINO DE TERROR -->
     <div id="camino-terror">
+        <!-- Al hacer clic en el fondo oscuro con la linterna se activa el mensaje -->
         <div id="jason-fondo" onclick="activarJumpscare()"></div>
         <div id="linterna-oscuridad"></div>
         <div id="luz-borde"></div>
         <div class="instruccion-terror" id="texto-busca">Explora el bosque con la linterna... Toca si encuentras algo.</div>
         
-        <!-- MENSAJE ROMÁNTICO DE JASON -->
+        <!-- CARTA ROMÁNTICA DE JASON -->
         <div id="jumpscare-mensaje">
             <div class="mensaje-jason-texto">
                 Aunque estés en el camino más oscuro y parezca que estás sola... <b>quiero que sepas que nunca lo estarás.</b> 
@@ -401,6 +400,7 @@
         }
 
         function activarJumpscare() {
+            // Ocultar la linterna para revelar la imagen completa y mostrar la tarjeta de amor
             linterna.style.display = 'none';
             luzBorde.style.display = 'none';
             document.getElementById('texto-busca').style.display = 'none';
@@ -433,6 +433,7 @@
             document.getElementById('jumpscare-mensaje').style.display = 'none';
             
             linterna.style.display = 'block';
+            luzBorde.style.display = 'block';
             document.getElementById('texto-busca').style.display = 'block';
             caminoTerror.classList.remove('pantalla-roja');
             caminoTranquilo.style.filter = "none";
